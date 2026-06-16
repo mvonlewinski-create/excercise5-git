@@ -1,51 +1,64 @@
-def ASSIGNMENT(new_list, i, old_list, j):
-    new_list[i] = old_list[j]
-
-
-def mergeSort(list_to_sort_by_merge):
-    if (
-        len(list_to_sort_by_merge) > 1
-        and not len(list_to_sort_by_merge) < 1
-        and len(list_to_sort_by_merge) != 0
-    ):
-        mid = len(list_to_sort_by_merge) // 2
-        left = list_to_sort_by_merge[:mid]
-        right = list_to_sort_by_merge[mid:]
-
-        mergeSort(left)
-        mergeSort(right)
-
-        l = 0
-        r = 0
-        i = 0
-
-        while l < len(left) and r < len(right):
-            if left[l] <= right[r]:
-                ASSIGNMENT(new_list=list_to_sort_by_merge, i=i, old_list=left, j=l)
-                l += 1
-            else:
-                ASSIGNMENT(new_list=list_to_sort_by_merge, i=i, old_list=right, j=r)
-                r += 1
-            i += 1
-
-        while l < len(left):
-            list_to_sort_by_merge[i] = left[l]
-            l += 1
-            i += 1
-
-        while r < len(right):
-            list_to_sort_by_merge[i] = right[r]
-            r += 1
-            i += 1
-
-
 import matplotlib.pyplot as plt
 
-my_list = [54, 26, 93, 17, 77, 31, 44, 55, 20]
-x = range(len(my_list))
-plt.plot(x, my_list)
-plt.show()
-mergeSort(my_list)
-x = range(len(my_list))
-plt.plot(x, my_list)
-plt.show()
+
+def merge_sort(arr):
+    """
+    Sort `arr` in place using merge sort.
+
+    Recursively splits the array into two halves, sorts each half,
+    then merges the two sorted halves back into `arr`.
+    """
+
+    if len(arr) > 1:
+        mid = len(arr) // 2
+        left = arr[:mid]
+        right = arr[mid:]
+
+        merge_sort(left)
+        merge_sort(right)
+
+        left_idx = 0
+        right_idx = 0
+        merge_idx = 0
+
+        while left_idx < len(left) and right_idx < len(right):
+            if left[left_idx] <= right[right_idx]:
+                arr[merge_idx] = left[left_idx]
+                left_idx += 1
+            else:
+                arr[merge_idx] = right[right_idx]
+                right_idx += 1
+            merge_idx += 1
+
+        while left_idx < len(left):
+            arr[merge_idx] = left[left_idx]
+            left_idx += 1
+            merge_idx += 1
+
+        while right_idx < len(right):
+            arr[merge_idx] = right[right_idx]
+            right_idx += 1
+            merge_idx += 1
+
+
+if __name__ == "__main__":
+    my_list = [54, 26, 93, 17, 77, 31, 44, 55, 20]
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+
+    ax1.bar(range(len(my_list)), my_list, color="steelblue")
+    ax1.set_title("Before Sorting")
+    ax1.set_xlabel("Index")
+    ax1.set_ylabel("Value")
+
+    merge_sort(my_list)
+
+    ax2.bar(range(len(my_list)), my_list, color="steelblue")
+    ax2.set_title("After Sorting")
+    ax2.set_xlabel("Index")
+    ax2.set_ylabel("Value")
+
+    plt.suptitle("Merge Sort Visualization")
+    plt.tight_layout()
+    plt.show()
+
